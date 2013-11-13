@@ -40,4 +40,3 @@ gem 'jquery-rails'
 gem 'devise'
 
 gem 'geocoder'
-gem 'gmaps4rails'

@@ -12,6 +12,67 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require underscore
-//= require gmaps/google
 //= require_tree .
+
+$( document ).ready(function() {
+  console.log( "ready!" );
+
+  $(function(){
+    $.ajaxSetup({
+      beforeSend: function( xhr ) {
+        var token = $('meta[name="csrf-token"]').attr('content');
+        if (token) xhr.setRequestHeader('X-CSRF-Token', token);
+      }
+    });
+  });
+
+  $('#log-in-link').click(function(e){
+     e.preventDefault();
+    $('#log-in-box').show();
+  });
+
+  $('#sign-up-link').click(function(e){
+     e.preventDefault();
+    $('#sign-up-box').show();
+  });
+
+  $('#story-link').click(function(e){
+     e.preventDefault();
+    $('#story-box').show();
+  });
+
+  // function login() {
+  //   var email = $('#user_email').val();
+  //   var password = $('#user_password').val();
+  //   var data = {remote: true, commit: "Sign in", utf8: "✓",
+  //               user: {remember_me: 1, password: password, email: email}};
+  //   $.post('/users/sign_in.json', data, function(resp) {
+  //     if(resp.success) {
+  //       $('#sign-up-button').click(function(e) {
+  //         e.preventDefault
+  //         $('#sign-up-box').hide();
+  //       });  
+  //     } else {
+  //       // let the user know they failed authentication
+  //     }
+  //   });
+  //   return false;
+  // }
+
+
+  $("form#sign_in_user").bind("ajax:success", function(e, data, status, xhr) {
+    if(data.success) {
+      $('#log-in-box').hide();
+      $('#signed-in-links').show();
+      $('#welcome-links').hide();
+      $('#email').html(data.email)
+      // $('#submit_comment').slideToggle(1000, "easeOutBack");
+    } else {
+      alert('failure!');
+      $('#welcome-links').show();
+    }
+  });  
+});
+
+
+

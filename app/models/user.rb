@@ -9,9 +9,6 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me
   # attr_accessible :title, :body
 
-  geocoded_by :location
-  after_validation :geocode
-
   def index
 
   end

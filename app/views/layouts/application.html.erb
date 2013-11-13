@@ -5,48 +5,92 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc&sensor=false"></script>
-  <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js' type='text/javascript'></script>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASm3CwaK9qtcZEWYa-iQwHaGi3gcosAJc&sensor=false">
+  </script>
+  
   <script type="text/javascript">
-            // When the window has finished loading create our google map below
-            google.maps.event.addDomListener(window, 'load', init);
-        
-            function init() {
-                // Basic options for a simple Google Map
-                // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
-                var mapOptions = {
-                    // How zoomed in you want the map to start at (always required)
-                    zoom: 3,
 
-                    // The latitude and longitude to center the map (always required)
-                    center: new google.maps.LatLng(40.6700, -73.9400), // New York
+  var map;
+    // When the window has finished loading create our google map below
+    google.maps.event.addDomListener(window, 'load', init);
 
-                    // How you would like to style the map. 
-                    // This is where you would paste any style found on Snazzy Maps.
-                    styles: [{featureType:'all',stylers:[{visibility:'off'}]},{featureType:'water',stylers:[{visibility:'on'},{lightness:-100}]}]
-                };
+    function init() {
+        var mapOptions = {
+            zoom: 3,
+            center: new google.maps.LatLng(40.6700, -73.9400),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            styles: [
+              {
+                  featureType:'all',
+                  stylers:[
+                  {visibility:'off'}
+                ]
+              },
+              {
+                  featureType:'water',
+                  stylers:[
+                  {visibility:'on'},
+                  {lightness:-100}
+                  ]
+              }
+            ],
+        };
 
-                // Get the HTML DOM element that will contain your map 
-                // We are using a div with id="map" seen below in the <body>
-                var mapElement = document.getElementById('map');
+        // Get the HTML DOM element that will contain your map 
+        // We are using a div with id="map" seen below in the <body>
+        var mapElement = document.getElementById('map');
 
-                // Create the Google Map using out element and options defined above
-                var map = new google.maps.Map(mapElement, mapOptions);
-            }
-        </script>
+        // Create the Google Map using out element and options defined above
+        var map = new google.maps.Map(mapElement, mapOptions);
+
+
+        $.ajax({
+        url: '/stories',
+        method: 'GET',
+        dataType: 'json'
+        }).done(function(data){
+          $.each(data, function(idx, story){
+            var coordinates = new google.maps.LatLng(story.latitude, story.longitude)
+            console.log(story.content)
+            var contentString = '<div id="marker-content">' + story.content.substring(0,20) + '</div>';
+            var marker = new google.maps.Marker({
+              position: coordinates,
+              map: map
+              });
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+            });
+
+            var infoWindow = google.maps.event.addListener(marker, 'click', function() {
+                map.setZoom(8);
+                map.setCenter(marker.getPosition());
+                content: contentString
+              });
+            // var infoWindow = new google.maps.InfoWindow({
+            //   content: contentString
+            // });
+            // google.maps.event.addListener(marker, 'click', function() {
+            //   infoWindow.open(map,marker);
+            // });
+          });
+        });
+    };
+  </script>
 </head>
 <body>
 
 <div id="container">
   <div id="user_nav">
-    <% if user_signed_in? %>
-      Logged in as <strong><%= current_user.email %></strong>.
+    <div id="signed-in-links">
+      Logged in as <strong id="email"></strong>.
       <%= link_to 'Edit profile', edit_user_registration_path %> |
       <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-    <% else %>
-      <%= link_to "Sign up", new_user_registration_path %> |
-      <%= link_to "Login", new_user_session_path %>
-    <% end %>
+    </div> 
+    <div id="welcome-links">   
+        <%= link_to "Sign Up", new_user_registration_path, class: "d-link", id: "sign-up-link" %> |
+        <%= link_to "Login", new_user_session_path, class: "d-link", id: "log-in-link"  %>
+    </div>
   </div>
 
   <% flash.each do |name, msg| %>
@@ -58,7 +102,10 @@
   <%= yield %>
 </div>
 
-<div id="map"></div>  
+<div id="map"></div>
+
+<%= render :partial => "layouts/log_in" %>
+<%= render :partial => "layouts/sign_up" %>
 
 </body>
 </html>
