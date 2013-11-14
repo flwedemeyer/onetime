@@ -172,9 +172,11 @@ h2 {
 #story-box,
 #one-story-box {
   bottom: 20px;
-  display: block;
   margin-top: 0px;
   overflow-y: scroll;
   overflow-x: hidden;
   top: 60px;
+}
+#one-story-box {
+  display: block;
 }
