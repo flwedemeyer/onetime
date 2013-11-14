@@ -12,7 +12,6 @@
   <script type="text/javascript">
 
   var map;
-    // When the window has finished loading create our google map below
     google.maps.event.addDomListener(window, 'load', init);
 
     function init() {
@@ -37,11 +36,8 @@
             ],
         };
 
-        // Get the HTML DOM element that will contain your map 
-        // We are using a div with id="map" seen below in the <body>
         var mapElement = document.getElementById('map');
 
-        // Create the Google Map using out element and options defined above
         var map = new google.maps.Map(mapElement, mapOptions);
 
 
@@ -69,24 +65,20 @@
                 content: contentString,
                 infowindow.open(map,marker)
               });
-            // var infoWindow = new google.maps.InfoWindow({
-            //   content: contentString
-            // });
-            // google.maps.event.addListener(marker, 'click', function() {
-            //   infoWindow.open(map,marker);
-            // });
           });
         });
     };
+
   </script>
 </head>
 <body>
 
 <div id="container">
   <div id="user_nav">
+    <%= link_to image_tag "logo.png", id: "logo" %>
     <div id="signed-in-links">
       Logged in as <strong id="email"></strong>.
-      <%= link_to 'Edit profile', edit_user_registration_path %> |
+      <%= link_to "New story", new_story_path, id: "story-link" %> |
       <%= link_to "Logout", destroy_user_session_path, method: :delete %>
     </div> 
     <div id="welcome-links">   
@@ -105,6 +97,7 @@
 </div>
 
 <div id="map"></div>
+
 
 <%= render :partial => "layouts/log_in" %>
 <%= render :partial => "layouts/sign_up" %>

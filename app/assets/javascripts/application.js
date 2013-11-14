@@ -41,24 +41,6 @@ $( document ).ready(function() {
     $('#story-box').show();
   });
 
-  // function login() {
-  //   var email = $('#user_email').val();
-  //   var password = $('#user_password').val();
-  //   var data = {remote: true, commit: "Sign in", utf8: "✓",
-  //               user: {remember_me: 1, password: password, email: email}};
-  //   $.post('/users/sign_in.json', data, function(resp) {
-  //     if(resp.success) {
-  //       $('#sign-up-button').click(function(e) {
-  //         e.preventDefault
-  //         $('#sign-up-box').hide();
-  //       });  
-  //     } else {
-  //       // let the user know they failed authentication
-  //     }
-  //   });
-  //   return false;
-  // }
-
 
   $("form#sign_in_user").bind("ajax:success", function(e, data, status, xhr) {
     if(data.success) {
