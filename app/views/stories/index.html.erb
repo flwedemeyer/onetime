@@ -1,0 +1,24 @@
+<div class="devise-box" id="stories-listed">
+<h1>Listing Stories</h1>
+ 
+<table>
+  <tr>
+    <th>Location</th>
+    <th>Content</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+  </tr>
+ 
+<% @stories.each do |story| %>
+  <tr>
+    <td><%= story.location %></td>
+    <td><%= story.content %></td>
+    <td><%= story.latitude %></td>
+    <td><%= story.longitude %></td>
+<% end %>
+</table>
+ 
+<br />
+ 
+<%= link_to "New story", new_story_path, id: "story-link" %>
+</div>
