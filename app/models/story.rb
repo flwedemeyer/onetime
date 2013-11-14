@@ -3,5 +3,5 @@ class Story < ActiveRecord::Base
   belongs_to :user
 
   geocoded_by :location
-  after_validation :geocode
+  before_create :geocode
 end

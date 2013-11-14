@@ -10,10 +10,10 @@ class StoriesController < ApplicationController
   end
   
   def show
-    @story = Story.find[:id]
+    @story = Story.find(params[:id])
 
     respond_to do |format|
-      format.html
+      format.html {render :layout => !request.xhr?}
       format.json {render :json => @story.to_json}
     end  
   end
@@ -23,10 +23,9 @@ class StoriesController < ApplicationController
   end
   
   def create
-
-  	@story = Story.create(params[:story])
-    @story.user = current_user
+  	@story = Story.new(params[:story])
     if @story.save
+      @story.user = current_user
       flash[:notice] = "Successfully created story."
       redirect_to '/'
     else

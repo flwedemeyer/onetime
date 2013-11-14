@@ -26,18 +26,21 @@ $( document ).ready(function() {
     });
   });
 
-  $('#log-in-link').click(function(e){
+  $('#log-in-link').click(function(e) {
      e.preventDefault();
+     hideOverlayBoxes();
     $('#log-in-box').show();
   });
 
-  $('#sign-up-link').click(function(e){
+  $('#sign-up-link').click(function(e) {
      e.preventDefault();
+     hideOverlayBoxes();
     $('#sign-up-box').show();
   });
 
-  $('#story-link').click(function(e){
+  $('#story-link').click(function(e) {
      e.preventDefault();
+     hideOverlayBoxes();
     $('#story-box').show();
   });
 
@@ -47,14 +50,21 @@ $( document ).ready(function() {
       $('#log-in-box').hide();
       $('#signed-in-links').show();
       $('#welcome-links').hide();
-      $('#email').html(data.email)
-      // $('#submit_comment').slideToggle(1000, "easeOutBack");
+      $('#email').html(data.email);
     } else {
       alert('failure!');
       $('#welcome-links').show();
     }
-  });  
+  });
+
 });
+
+function hideOverlayBoxes() {
+  $('#log-in-box').hide();
+  $('#sign-up-box').hide();
+  $('#story-box').hide();
+  $('#one-story-box').hide();
+}
 
 
 

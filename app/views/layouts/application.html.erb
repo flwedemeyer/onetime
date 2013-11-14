@@ -48,24 +48,43 @@
         }).done(function(data){
           $.each(data, function(idx, story){
             var coordinates = new google.maps.LatLng(story.latitude, story.longitude)
-            console.log(story.content)
-            var contentString = '<div id="marker-content">' + story.content.substring(0,20) + '</div>';
+            var contentString = '<div id="marker-content">' + story.content.substring(0, 18) + '<a href="/stories/' + story.id + '" class="read-more-link">...Read more.</a></div>';
             var marker = new google.maps.Marker({
               position: coordinates,
               map: map,
-              icon: 'assets/marker.png'
+              icon: '/assets/marker.png'
               });
             var infowindow = new google.maps.InfoWindow({
               content: contentString
             });
 
-            var infoWindow = google.maps.event.addListener(marker, 'click', function() {
-                map.setZoom(8);
-                map.setCenter(marker.getPosition());
-                content: contentString,
-                infowindow.open(map,marker)
-              });
+            google.maps.event.addListener(marker, 'click', function() {
+              hideOverlayBoxes();
+              map.setZoom(8);
+              map.setCenter(marker.getPosition());
+              infowindow.open(map,marker);
+
+              setTimeout(function() {
+                $('.read-more-link').on('click', function(e) {
+                  console.log("clicked event")
+                  e.preventDefault();
+                  var $this = $(this);
+                  $.get($this.attr('href'), function(data) {
+                    hideOverlayBoxes();
+                    $('#one-story-box').remove();
+                    $('body').append(data);
+                    $('#one-story-back').on('click', function(e) {
+                      e.preventDefault();
+                      $('#one-story-box').remove();
+                    })
+                  });
+                  return false;
+                });
+              }, 100);
+
+            });
           });
+
         });
     };
 
@@ -76,12 +95,12 @@
 <div id="container">
   <div id="user_nav">
     <%= link_to image_tag "logo.png", id: "logo" %>
-    <div id="signed-in-links">
-      Logged in as <strong id="email"></strong>.
+    <div id="signed-in-links" <%= 'style="display:block;'.html_safe if user_signed_in? %>>
+      Logged in as <strong id="email"><%= current_user.email if current_user %></strong>.
       <%= link_to "New story", new_story_path, id: "story-link" %> |
       <%= link_to "Logout", destroy_user_session_path, method: :delete %>
     </div> 
-    <div id="welcome-links">   
+    <div id="welcome-links" <%= 'style="display:none;'.html_safe if user_signed_in? %>>  
         <%= link_to "Sign Up", new_user_registration_path, class: "d-link", id: "sign-up-link" %> |
         <%= link_to "Login", new_user_session_path, class: "d-link", id: "log-in-link"  %>
     </div>
@@ -98,7 +117,7 @@
 
 <div id="map"></div>
 
-
+<%= render :partial => "stories/form", :locals => {story: @new_story} %>
 <%= render :partial => "layouts/log_in" %>
 <%= render :partial => "layouts/sign_up" %>
 

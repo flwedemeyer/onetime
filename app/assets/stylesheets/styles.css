@@ -6,6 +6,12 @@ body, html {
  }
 
  #map {
+  position: fixed;
+  top: 10px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+
     width: 100%;
     height: 100%;
 }
@@ -59,6 +65,10 @@ a {
   border-radius: 20px;
   
   -webkit-border-radius: 20px;
+  border-radius: 20px;
+  
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
 }
 
 #flash_alert {
@@ -129,7 +139,7 @@ input {
 }
 
 #user_nav {
-  position: absolute;
+  position: fixed;
   top: 0px;
   width: 100%;
   background-color: white; 
@@ -137,6 +147,9 @@ input {
   height: 30px;
   z-index: 100;
   padding-top: 15px;
+
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
 }
 
 #one-logo {
@@ -156,4 +169,12 @@ h2 {
   line-height: 0px;
 }
 
-
+#story-box,
+#one-story-box {
+  bottom: 20px;
+  display: block;
+  margin-top: 0px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  top: 60px;
+}
